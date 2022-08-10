@@ -4,9 +4,9 @@
 //
 //
 
-var columns = 7;
+var columns = 8;
 
-var ft_height = 3.5 + 8 + .6;
+var ft_height = 11.5 + 4;
 
 var full_width = 800;
 var full_height = full_width / 27.5 * ft_height;
@@ -23,12 +23,12 @@ function crx(x) {
 }
 
 function cty(y) {
-	var result = y/13 * full_height;
+	var result = (y+4)/ft_height * full_height;
 	return Math.floor(result);
 }
 
 function cby(y) {
-	var result = y/13 * full_height;
+	var result = y/ft_height * full_height;
 	result = full_height - result;
 	return Math.floor(result);
 }
@@ -58,12 +58,12 @@ function set_random() {
 	for (var i=1; i<=columns; i++ ) {
 		var c = document.getElementById("b"+i);
 		var x = Math.random()*3 + 5;
-		if ( i === 1 || i === columns ) {
-			x = Math.random()*.4 + 7.6;
-			x = 8.;
+		if ( i <= 2 || i >= columns - 1 ){
+			x = Math.random()*2 + 8;
+			//x = 8.;
 		}
-		if ( i >= 2 && i <= 6 ) {
-			x = Math.random()*2.75 + 4;
+		if ( i >= 3 && i <= 6 ) {
+			x = Math.random()*.75 + 6;
 		}
 		c.value = Math.round(x*10) / 10;
 	}
@@ -83,23 +83,41 @@ function redraw_boards() {
 
 	ctx.clearRect(0, 0, c.width, c.height);
 
-	// Create gradient
+	// paint the ceiling lines
+	ctx.beginPath();
+	ctx.moveTo(clx(0), cty(0));
+	ctx.lineTo(clx(27.5/2), cty(-4));
+	ctx.lineTo(clx(27.5), cty(0));
+	ctx.stroke();
 
 	// Fill with gradient
-	ctx.fillStyle = 'gray';
+	ctx.fillStyle = 'lightgray';
 	// ctx.fillRect(clx(27.5/2-6), cty(0), clx(12), cby(6.75)-cty(0));
-	ctx.fillRect(clx(7.5), cty(0), crx(7.5)-clx(7.5), cby(6.75)-cty(0));
+	ctx.fillRect(clx(7.5), cty(-1.8), crx(7.5)-clx(7.5), cby(6.75)-cty(-1.8));
 
-	var endwidths = (27.5 - 5 * 4) / 2;
+
+	ctx.fillStyle = 'black';
+	ctx.textAlign="center"; 
+	ctx.textBaseline = "middle";
+	var text = 'Praise God from \n whom all blessings flow \n Praise Him all \n creatures here below';
+	var lines = text.split(' \n ');
+	for ( let i = 0; i < lines.length; i++ ) {
+		ctx.fillText(lines[i] , clx(27.5 / 2), cby(9.5)+(i-2)*25);
+	}
+
+
+	var base_width = 28 / 8;
+	var endwidths = (27.5 - 6 * base_width) / 2;
 	var hoffsets = [
 		0,
-		0*4+endwidths,
-		1*4+endwidths,
-		2*4+endwidths,
-		3*4+endwidths,
-		4*4+endwidths,
-		5*4+endwidths,
-		5*4+2*endwidths];
+		0*base_width+endwidths,
+		1*base_width+endwidths,
+		2*base_width+endwidths,
+		3*base_width+endwidths,
+		4*base_width+endwidths,
+		5*base_width+endwidths,
+		6*base_width+endwidths,
+		6*base_width+2*endwidths];
 
 	for( var i = 1; i <= columns; i++ ) {
 		var height = get_board_height(i);
@@ -107,7 +125,7 @@ function redraw_boards() {
 		ctx.fillStyle = "black";
 		var bwidth = clx(hoffsets[i]) - clx(hoffsets[i-1]);
 		var bheight = cty(height);
-		ctx.fillRect(clx(hoffsets[i-1])+10, cby(height), bwidth-15, bheight);
+		ctx.fillRect(clx(hoffsets[i-1])+1, cby(height), bwidth-1, bheight);
 		
 		var hl_x = clx(1/12);
 		var hl_y = cty(1/12);
