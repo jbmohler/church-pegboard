@@ -3,9 +3,12 @@
 // 13 ft
 //
 //
+
+var columns = 7;
+
 var ft_height = 3.5 + 8 + .6;
 
-var full_width = 1600;
+var full_width = 800;
 var full_height = full_width / 27.5 * ft_height;
 
 function clx(x) {
@@ -43,7 +46,7 @@ function prep_canvas() {
 
 function set_valley() {
 	var values = [8, 7, 6, 5, 6, 7, 8];
-	for (var i=1; i<=7; i++ ) {
+	for (var i=1; i<=columns; i++ ) {
 		var c = document.getElementById("b"+i);
 		c.value = values[i-1];
 	}
@@ -52,10 +55,10 @@ function set_valley() {
 }
 
 function set_random() {
-	for (var i=1; i<=7; i++ ) {
+	for (var i=1; i<=columns; i++ ) {
 		var c = document.getElementById("b"+i);
 		var x = Math.random()*3 + 5;
-		if ( i === 1 || i === 7 ) {
+		if ( i === 1 || i === columns ) {
 			x = Math.random()*.4 + 7.6;
 			x = 8.;
 		}
@@ -98,7 +101,7 @@ function redraw_boards() {
 		5*4+endwidths,
 		5*4+2*endwidths];
 
-	for( var i = 1; i <= 7; i++ ) {
+	for( var i = 1; i <= columns; i++ ) {
 		var height = get_board_height(i);
 
 		ctx.fillStyle = "black";
@@ -110,8 +113,6 @@ function redraw_boards() {
 		var hl_y = cty(1/12);
 		var hl_rad_x = clx(1/48 / 2);
 		var hl_rad_y = cty(1/48 / 2);
-		console.log(hl_rad_x);
-		console.log(hl_rad_y);
 
 		ctx.fillStyle = "white";
 		ctx.beginPath();
