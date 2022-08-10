@@ -1,0 +1,25 @@
+<html>
+	<head>
+		<title>Church front</title>
+		<script src='draw.js'></script>
+	</head>
+	<body onload='prep_canvas()'>
+		<form onsubmit='redraw_boards(); return false'>
+			<input id='btn_valley' type='button' value='valley'>
+			<input id='btn_random' type='button' value='random'>
+			<input type='submit'>
+			<br />
+			<input id='b1' style="width: .5in">
+			<input id='b2' style="width: .5in">
+			<input id='b3' style="width: .5in">
+			<input id='b4' style="width: .5in">
+			<input id='b5' style="width: .5in">
+			<input id='b6' style="width: .5in">
+			<input id='b7' style="width: .5in">
+		</form>
+
+		<canvas id="myCanvas" width="400" height="200"
+			style="border: 1px solid #000;">
+		</canvas>
+	</body>
+</html>
