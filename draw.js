@@ -8,7 +8,7 @@ var columns = 8;
 
 var ft_height = 11.5 + 4;
 
-var full_width = 800;
+var full_width = 1000;
 var full_height = full_width / 27.5 * ft_height;
 
 function clx(x) {
@@ -58,9 +58,14 @@ function set_random() {
 	for (var i=1; i<=columns; i++ ) {
 		var c = document.getElementById("b"+i);
 		var x = Math.random()*3 + 5;
+		var early = [1, 2][Math.floor(Math.random()*2)];
+		var later = [columns -1, columns][Math.floor(Math.random()*2)];
 		if ( i <= 2 || i >= columns - 1 ){
-			x = Math.random()*2 + 8;
-			//x = 8.;
+			if( i == early || i == later ) {
+				x = 10.;
+			}else {
+				x = Math.random()*2 + 8;
+			}
 		}
 		if ( i >= 3 && i <= 6 ) {
 			x = Math.random()*.75 + 6;
@@ -71,10 +76,15 @@ function set_random() {
 	redraw_boards();
 }
 
+function get_show_dots() {
+	return false;
+	var c = document.getElementById("chk_show_dots");
+	return c.value;
+}
+
 function get_board_height(index) {
 	var c = document.getElementById("b"+index);
 	return  Number(c.value);
-
 }
 
 function redraw_boards() {
@@ -94,7 +104,6 @@ function redraw_boards() {
 	ctx.fillStyle = 'lightgray';
 	// ctx.fillRect(clx(27.5/2-6), cty(0), clx(12), cby(6.75)-cty(0));
 	ctx.fillRect(clx(7.5), cty(-1.8), crx(7.5)-clx(7.5), cby(6.75)-cty(-1.8));
-
 
 	ctx.fillStyle = 'black';
 	ctx.textAlign="center"; 
@@ -126,15 +135,24 @@ function redraw_boards() {
 		var bwidth = clx(hoffsets[i]) - clx(hoffsets[i-1]);
 		var bheight = cty(height);
 		ctx.fillRect(clx(hoffsets[i-1])+1, cby(height), bwidth-1, bheight);
-		
-		var hl_x = clx(1/12);
-		var hl_y = cty(1/12);
-		var hl_rad_x = clx(1/48 / 2);
-		var hl_rad_y = cty(1/48 / 2);
 
-		ctx.fillStyle = "white";
-		ctx.beginPath();
-		ctx.ellipse(clx(hoffsets[i-1])+10, cby(height)+10, hl_rad_x, hl_rad_y, 0, 0, 2*Math.PI);
-		ctx.fill();
+		if ( get_show_dots() ) {
+			var hl_x = clx(1/12);
+			var hl_y = cty(1/12);
+			//var hl_rad_x = clx(1/48 / 2);
+			//var hl_rad_y = cty(1/48 / 2);
+
+			var xdots = Math.floor((hoffsets[i] - hoffsets[i-1]) * 12);
+			var ydots = Math.floor(height * 12);
+
+			ctx.fillStyle = "white";
+			for ( var dx = 0; dx < xdots; dx++ ) {
+				for ( var dy = 0; dy < ydots; dy++ ) {
+					ctx.beginPath();
+					ctx.ellipse(clx(hoffsets[i-1]+(dx+.5)/12), cby((dy+.5)/12), 1, 1, 0, 0, 2*Math.PI);
+					ctx.fill();
+				}
+			}
+		}
 	}
 }
